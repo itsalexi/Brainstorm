@@ -11,7 +11,7 @@ import { store } from './store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 SplashScreen.preventAutoHideAsync();
 
-// AsyncStorage.clear();
+AsyncStorage.clear();
 
 export default function App() {
     const [loaded, setLoaded] = useState(false);

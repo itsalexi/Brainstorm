@@ -82,6 +82,7 @@ const SignUpForm = () => {
                 label="First Name"
                 onInputChanged={inputChangedHandler}
                 autoCapitalize="none"
+                value={formState.inputValues.firstName}
                 errorText={formState.inputValidities['firstName']}
                 placeholder="John"
             />
@@ -93,6 +94,7 @@ const SignUpForm = () => {
                 label="Last Name"
                 onInputChanged={inputChangedHandler}
                 autoCapitalize="none"
+                value={formState.inputValues.lastName}
                 errorText={formState.inputValidities['lastName']}
                 placeholder="Doe"
             />
@@ -105,6 +107,7 @@ const SignUpForm = () => {
                 onInputChanged={inputChangedHandler}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={formState.inputValues.email}
                 errorText={formState.inputValidities['email']}
                 placeholder="johndoe@yahoo.com"
             />
@@ -118,6 +121,7 @@ const SignUpForm = () => {
                 secureTextEntry
                 onInputChanged={inputChangedHandler}
                 errorText={formState.inputValidities['password']}
+                value={formState.inputValues.password}
                 placeholder="Must be atleast 6 characters long"
             />
 

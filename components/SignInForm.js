@@ -11,17 +11,19 @@ import { login } from '../utils/actions/authActions';
 import { useDispatch } from 'react-redux';
 import colors from '../constants/colors';
 
+const testMode = true;
+
 const initialState = {
     inputValues: {
-        email: false,
-        password: false,
+        email: testMode ? 'test@alexi.life' : '',
+        password: testMode ? 'test123' : '',
     },
 
     inputValidities: {
-        email: false,
-        password: false,
+        email: testMode,
+        password: testMode,
     },
-    formIsValid: false,
+    formIsValid: testMode,
 };
 const SignInForm = () => {
     const dispatch = useDispatch();
@@ -81,6 +83,7 @@ const SignInForm = () => {
                 errorText={formState.inputValidities['email']}
                 placeholder="Enter your email"
                 autoCapitalize="none"
+                value={formState.inputValues.email}
             />
             <Input
                 id="password"
@@ -92,6 +95,7 @@ const SignInForm = () => {
                 onInputChanged={inputChangedHandler}
                 secureTextEntry
                 placeholder="Enter your password"
+                value={formState.inputValues.password}
             />
             {!loading ? (
                 <SubmitButton
