@@ -32,10 +32,6 @@ const SignInForm = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const loginHandler = () => {
-        login(formState.inputValues.email, formState.inputValues.password);
-    };
-
     useEffect(() => {
         if (error) {
             console.log(error);
