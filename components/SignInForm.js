@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useReducer, useCallback } from 'react';
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
+import React, { useReducer, useCallback, useState, useEffect } from 'react';
 
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -7,8 +7,16 @@ import Input from './Input';
 import SubmitButton from './SubmitButton';
 import { validateInput } from '../utils/actions/formActions';
 import { reducer } from '../reducers/formReducer';
+import { login } from '../utils/actions/authActions';
+import { useDispatch } from 'react-redux';
+import colors from '../constants/colors';
 
 const initialState = {
+    inputValues: {
+        email: false,
+        password: false,
+    },
+
     inputValidities: {
         email: false,
         password: false,
@@ -16,15 +24,49 @@ const initialState = {
     formIsValid: false,
 };
 const SignInForm = () => {
+    const dispatch = useDispatch();
+
     const [formState, dispatchFormState] = useReducer(reducer, initialState);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const loginHandler = () => {
+        login(formState.inputValues.email, formState.inputValues.password);
+    };
+
+    useEffect(() => {
+        if (error) {
+            console.log(error);
+            Alert.alert('An error has occurred', error);
+        }
+    }, [error]);
 
     const inputChangedHandler = useCallback(
         (inputId, inputValue) => {
             const result = validateInput(inputId, inputValue);
-            dispatchFormState({ inputId, validationResult: result });
+            dispatchFormState({
+                inputId,
+                validationResult: result,
+                inputValue,
+            });
         },
         [dispatchFormState]
     );
+
+    const signInHandler = useCallback(async () => {
+        try {
+            setLoading(true);
+            const action = login(
+                formState.inputValues.email,
+                formState.inputValues.password
+            );
+            setError(null);
+            await dispatch(action);
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
+        }
+    }, [dispatch, formState]);
 
     return (
         <>
@@ -38,6 +80,7 @@ const SignInForm = () => {
                 keyboardType="email-address"
                 errorText={formState.inputValidities['email']}
                 placeholder="Enter your email"
+                autoCapitalize="none"
             />
             <Input
                 id="password"
@@ -50,12 +93,20 @@ const SignInForm = () => {
                 secureTextEntry
                 placeholder="Enter your password"
             />
-
-            <SubmitButton
-                style={{ marginTop: 15 }}
-                title="Login"
-                disabled={!formState.formIsValid}
-            />
+            {!loading ? (
+                <SubmitButton
+                    style={{ marginTop: 15 }}
+                    title="Log in"
+                    disabled={!formState.formIsValid}
+                    onPress={signInHandler}
+                />
+            ) : (
+                <ActivityIndicator
+                    size={'small'}
+                    color={colors.blue}
+                    style={{ marginTop: 20 }}
+                />
+            )}
         </>
     );
 };
