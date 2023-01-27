@@ -22,6 +22,7 @@ const Input = (props) => {
                 )}
                 <TextInput
                     {...props}
+                    placeholderTextColor={colors.lighterDark}
                     style={styles.input}
                     onChangeText={onChangeText}
                 />
@@ -44,8 +45,11 @@ const styles = StyleSheet.create({
     label: {
         marginVertical: 8,
         fontFamily: 'bold',
-        color: 'darkGray',
+        color: 'white',
         letterSpacing: 0.3,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10,
     },
     inputContainer: {
         width: '100%',
@@ -68,9 +72,12 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     errorText: {
-        color: 'red',
+        color: 'darkred',
         fontSize: 12,
-        fontFamily: 'regular',
+        fontFamily: 'bold',
         letterSpacing: 0.3,
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10,
     },
 });

@@ -5,5 +5,5 @@ export default {
     grey: '#708080',
     dark: '#242526',
     lightDark: '#3a3b3c',
-    lighterDark: '#8d9093',
+    lighterDark: '#aaaaaa',
 };

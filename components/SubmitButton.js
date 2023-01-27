@@ -16,7 +16,12 @@ const SubmitButton = ({ disabled, color, title, onPress, style }) => {
             }}
             onPress={disabled ? () => {} : onPress}
         >
-            <Text style={{ color: disabled ? colors.grey : 'white' }}>
+            <Text
+                style={{
+                    ...styles.buttonText,
+                    color: disabled ? colors.grey : 'white',
+                }}
+            >
                 {title}
             </Text>
         </TouchableOpacity>
@@ -31,6 +36,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    buttonText: {
+        fontFamily: 'bold',
     },
 });
 
