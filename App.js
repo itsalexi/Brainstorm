@@ -4,8 +4,8 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import AppNavigator from './navigation/AppNavigator';
 
+import AppNavigator from './navigation/AppNavigator';
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {

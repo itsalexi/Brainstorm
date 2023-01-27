@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 
 const SettingsScreen = (props) => {
     return (
         <View style={styles.container}>
-            <Text>Hello I'm at the Settings</Text>
-            <Button
-                title="Go to home"
-                onPress={() => props.navigation.navigate('Home')}
-            ></Button>
+            <Text>Hello</Text>
         </View>
     );
 };
