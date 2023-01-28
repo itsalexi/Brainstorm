@@ -1,17 +1,28 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import colors from '../constants/colors';
 
 const Input = (props) => {
-    const { label, icon, iconSize, IconPack, errorText, onInputChanged, id } =
-        props;
+    const [value, setValue] = useState(props.initialValue);
+
+    const {
+        label,
+        icon,
+        iconSize,
+        IconPack,
+        errorText,
+        onInputChanged,
+        id,
+        labelStyle,
+    } = props;
     const onChangeText = (text) => {
+        setValue(text);
         onInputChanged(id, text);
     };
 
     return (
         <View style={{ ...styles.container }}>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={{ ...styles.label, ...labelStyle }}>{label}</Text>
             <View style={styles.inputContainer}>
                 {icon && (
                     <IconPack
@@ -25,6 +36,7 @@ const Input = (props) => {
                     placeholderTextColor={colors.lighterDark}
                     style={styles.input}
                     onChangeText={onChangeText}
+                    value={value}
                 />
             </View>
             {errorText && (
@@ -47,9 +59,6 @@ const styles = StyleSheet.create({
         fontFamily: 'bold',
         color: 'white',
         letterSpacing: 0.3,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
     inputContainer: {
         width: '100%',
@@ -76,8 +85,5 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: 'bold',
         letterSpacing: 0.3,
-        textShadowColor: 'rgba(0, 0, 0, 0.3)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
 });

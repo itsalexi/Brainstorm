@@ -79,7 +79,7 @@ const SignInForm = () => {
                 errorText={formState.inputValidities['email']}
                 placeholder="Enter your email"
                 autoCapitalize="none"
-                value={formState.inputValues.email}
+                initialValue={formState.inputValues.email}
             />
             <Input
                 id="password"
@@ -91,7 +91,7 @@ const SignInForm = () => {
                 onInputChanged={inputChangedHandler}
                 secureTextEntry
                 placeholder="Enter your password"
-                value={formState.inputValues.password}
+                initialValue={formState.inputValues.password}
             />
             {!loading ? (
                 <SubmitButton

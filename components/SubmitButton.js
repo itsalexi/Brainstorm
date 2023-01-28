@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
     },
     buttonText: {
         fontFamily: 'bold',

@@ -4,7 +4,7 @@ import {
     getAuth,
     signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { child, getDatabase, ref, set } from 'firebase/database';
+import { child, getDatabase, ref, set, update } from 'firebase/database';
 import { authenticate, logout } from '../../store/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserData } from './userActions';
@@ -99,6 +99,26 @@ export const userLogout = () => {
         clearTimeout(timer);
         dispatch(logout());
     };
+};
+
+export const updateUserData = async (userId, newData) => {
+    const fullName = `${newData.firstName} ${newData.lastName}`.toLowerCase();
+    newData.fullName = fullName;
+
+    try {
+        const db = ref(getDatabase());
+        const user = child(db, `users/${userId}`);
+        await update(user, newData);
+    } catch (error) {
+        let message = 'Something went wrong, try again.';
+        const errorCode = error.code;
+        console.log(errorCode);
+        if (errorCode === 'PERMISSION_DENIED') {
+            message =
+                'You are not allowed to do this. Try logging back in again.';
+        }
+        throw new Error(message);
+    }
 };
 
 const createUser = async (firstName, lastName, email, userId) => {

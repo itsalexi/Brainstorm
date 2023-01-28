@@ -6,4 +6,6 @@ export default {
     dark: '#242526',
     lightDark: '#3a3b3c',
     lighterDark: '#aaaaaa',
+    text: '#242526',
+    red: '#C21807',
 };
