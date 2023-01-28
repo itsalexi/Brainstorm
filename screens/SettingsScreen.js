@@ -33,21 +33,18 @@ const SettingsScreen = (props) => {
 
     const firstName = userData.firstName || '';
     const lastName = userData.lastName || '';
-    const email = userData.email || '';
     const about = userData.about || '';
 
     const initialState = {
         inputValues: {
             firstName,
             lastName,
-            email,
             about,
         },
 
         inputValidities: {
             firstName: undefined,
             lastName: undefined,
-            email: undefined,
             about: undefined,
         },
         formIsValid: false,
@@ -97,108 +94,123 @@ const SettingsScreen = (props) => {
         return (
             currentValues.firstName != firstName ||
             currentValues.lastName != lastName ||
-            currentValues.email != email ||
             currentValues.about != about
         );
     };
 
+    useEffect(() => {
+        props.navigation.setOptions({
+            headerLeft: () => {
+                return (
+                    <PageTitle textStyle={styles.pageTitle} text="Settings" />
+                );
+            },
+        });
+    }, []);
+
     return (
-        <PageContainer style={styles.container}>
-            <PageTitle text="Settings" />
-            <ScrollView contentContainerStyle={styles.formContainer}>
-                <ProfileImage uri={userData?.profilePicture} userId={userData.userId} size={100} />
-
-                <Input
-                    id="firstName"
-                    icon="user"
-                    iconSize={24}
-                    IconPack={AntDesign}
-                    label="First Name"
-                    onInputChanged={inputChangedHandler}
-                    autoCapitalize="none"
-                    value={formState.inputValues.firstName}
-                    errorText={formState.inputValidities['firstName']}
-                    placeholder="John"
-                    labelStyle={{ color: 'black' }}
-                    initialValue={userData.firstName}
-                />
-                <Input
-                    id="lastName"
-                    icon="user"
-                    iconSize={24}
-                    IconPack={AntDesign}
-                    label="Last Name"
-                    onInputChanged={inputChangedHandler}
-                    autoCapitalize="none"
-                    value={formState.inputValues.lastName}
-                    errorText={formState.inputValidities['lastName']}
-                    placeholder="Doe"
-                    labelStyle={{ color: 'black' }}
-                    initialValue={userData.lastName}
-                />
-                <Input
-                    id="email"
-                    icon="email-outline"
-                    iconSize={24}
-                    IconPack={MaterialCommunityIcons}
-                    label="Email"
-                    onInputChanged={inputChangedHandler}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    value={formState.inputValues.email}
-                    errorText={formState.inputValidities['email']}
-                    placeholder="johndoe@yahoo.com"
-                    labelStyle={{ color: 'black' }}
-                    initialValue={userData.email}
-                />
-                <Input
-                    id="about"
-                    icon="user"
-                    iconSize={24}
-                    IconPack={AntDesign}
-                    label="Bio"
-                    onInputChanged={inputChangedHandler}
-                    autoCapitalize="none"
-                    value={formState.inputValues.about}
-                    errorText={formState.inputValidities['about']}
-                    placeholder="Tell us about you"
-                    labelStyle={{ color: 'black' }}
-                    initialValue={userData.about}
-                />
-
-                {!loading ? (
-                    hasChanged() && (
-                        <SubmitButton
-                            style={{ marginTop: 15 }}
-                            title="Save Changes"
-                            disabled={!formState.formIsValid}
-                            onPress={saveHandler}
-                        />
-                    )
-                ) : (
-                    <ActivityIndicator
-                        size={'small'}
-                        color={colors.blue}
-                        style={{ marginTop: 20 }}
+        <View style={styles.back}>
+            <PageContainer style={styles.container}>
+                <ScrollView contentContainerStyle={styles.formContainer}>
+                    <ProfileImage
+                        uri={userData?.profilePicture}
+                        userId={userData.userId}
+                        size={100}
+                        showEditButton={true}
                     />
-                )}
-                <SubmitButton
-                    style={{ marginTop: 15 }}
-                    title="Logout"
-                    color={colors.red}
-                    onPress={() => dispatch(userLogout())}
-                />
-            </ScrollView>
-        </PageContainer>
+
+                    <Input
+                        id="firstName"
+                        icon="user"
+                        iconSize={24}
+                        IconPack={AntDesign}
+                        label="First Name"
+                        onInputChanged={inputChangedHandler}
+                        autoCapitalize="none"
+                        value={formState.inputValues.firstName}
+                        errorText={formState.inputValidities['firstName']}
+                        placeholder="John"
+                        labelStyle={{ color: 'black' }}
+                        initialValue={userData.firstName}
+                    />
+                    <Input
+                        id="lastName"
+                        icon="user"
+                        iconSize={24}
+                        IconPack={AntDesign}
+                        label="Last Name"
+                        onInputChanged={inputChangedHandler}
+                        autoCapitalize="none"
+                        value={formState.inputValues.lastName}
+                        errorText={formState.inputValidities['lastName']}
+                        placeholder="Doe"
+                        labelStyle={{ color: 'black' }}
+                        initialValue={userData.lastName}
+                    />
+
+                    <Input
+                        id="about"
+                        icon="user"
+                        iconSize={24}
+                        IconPack={AntDesign}
+                        label="Bio"
+                        onInputChanged={inputChangedHandler}
+                        autoCapitalize="none"
+                        value={formState.inputValues.about}
+                        errorText={formState.inputValidities['about']}
+                        placeholder="Tell us about you"
+                        labelStyle={{ color: 'black' }}
+                        initialValue={userData.about}
+                    />
+
+                    {!loading ? (
+                        hasChanged() && (
+                            <SubmitButton
+                                style={{ marginTop: 15 }}
+                                title="Save Changes"
+                                disabled={!formState.formIsValid}
+                                onPress={saveHandler}
+                            />
+                        )
+                    ) : (
+                        <ActivityIndicator
+                            size={'small'}
+                            color={colors.blue}
+                            style={{ marginTop: 20 }}
+                        />
+                    )}
+                    <SubmitButton
+                        style={{ marginTop: 15 }}
+                        title="Logout"
+                        color={colors.red}
+                        onPress={() => dispatch(userLogout())}
+                    />
+                </ScrollView>
+            </PageContainer>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
+        flex: 1,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        marginTop: 10,
     },
     formContainer: {
         alignItems: 'center',
+        width: '100%',
+        paddingTop: '15%',
+    },
+    back: {
+        backgroundColor: colors.blue,
+        flex: 1,
+    },
+    pageTitle: {
+        color: colors.white,
+        marginLeft: 20,
     },
 });
 

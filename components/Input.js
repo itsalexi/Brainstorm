@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightGrey,
         flexDirection: 'row',
         alignItems: 'center',
+        borderColor: colors.dark,
+        borderWidth: 2,
     },
     icon: {
         marginRight: 10,

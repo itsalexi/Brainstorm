@@ -9,7 +9,7 @@ import { authenticate, setAttemptedAutoLogin } from '../store/authSlice';
 import { userLogout } from '../utils/actions/authActions';
 import { getUserData } from '../utils/actions/userActions';
 import * as Font from 'expo-font';
-import logo from '../assets/images/logo.png';
+import LoadingScreen from './LoadingScreen';
 
 const StartUpScreen = () => {
     const dispatch = useDispatch();
@@ -68,33 +68,12 @@ const StartUpScreen = () => {
                 await tryLogin();
             }
         };
-        setTimeout(() => prepare(), 2000);
+        prepare();
     }, [dispatch]);
 
     useEffect(() => {});
 
-    return (
-        <BackgroundImage>
-            <View style={styles.imageContainer}>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={logo}
-                />
-            </View>
-        </BackgroundImage>
-    );
+    return <LoadingScreen />;
 };
-
-const styles = StyleSheet.create({
-    imageContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    image: {
-        width: '100%',
-    },
-});
 
 export default StartUpScreen;

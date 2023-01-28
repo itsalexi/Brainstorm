@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import colors from '../constants/colors';
 
 const PageContainer = ({ children, style }) => {
-    return <View style={{ ...styles.container, ...style }}>{children}</View>;
+    return <View style={{ ...style, ...styles.container }}>{children}</View>;
 };
 
 export default PageContainer;

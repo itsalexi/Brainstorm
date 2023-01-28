@@ -130,7 +130,6 @@ const createUser = async (firstName, lastName, email, userId) => {
         firstName,
         lastName,
         fullName,
-        email,
         userId,
         signUpDate: new Date().toISOString(),
     };

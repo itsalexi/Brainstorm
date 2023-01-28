@@ -20,12 +20,12 @@ import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
 import colors from '../constants/colors';
 import logo from '../assets/images/logo.png';
-import BackgroundGradient from '../components/BackgroundGradient';
+import BackgroundImage from '../components/BackgroundGradient';
 const AuthScreen = (props) => {
     const [isSigningUp, setisSigningUp] = useState(false);
 
     return (
-        <BackgroundGradient>
+        <BackgroundImage>
             <SafeAreaView style={styles.screen}>
                 <PageContainer style={styles.screen}>
                     <ScrollView
@@ -62,7 +62,7 @@ const AuthScreen = (props) => {
                     </ScrollView>
                 </PageContainer>
             </SafeAreaView>
-        </BackgroundGradient>
+        </BackgroundImage>
     );
 };
 

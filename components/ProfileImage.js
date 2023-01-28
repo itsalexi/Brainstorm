@@ -15,12 +15,14 @@ import { launchImagePicker, uploadImageAsync } from '../utils/ImagePicker';
 import { updateUserData } from '../utils/actions/authActions';
 import { useDispatch } from 'react-redux';
 import { updateUserStateData } from '../store/authSlice';
-const ProfileImage = ({ size, uri, userId }) => {
+const ProfileImage = ({ size, uri, userId, showEditButton }) => {
     const dispatch = useDispatch();
     const source = uri ? { uri } : userImage;
 
     const [image, setImage] = useState(source);
     const [loading, setLoading] = useState(false);
+
+    const showEdit = showEditButton && showEditButton === true;
 
     const pickImage = async () => {
         try {
@@ -44,8 +46,10 @@ const ProfileImage = ({ size, uri, userId }) => {
         }
     };
 
+    const Container = showEditButton ? TouchableOpacity : View;
+
     return (
-        <TouchableOpacity onPress={pickImage}>
+        <Container onPress={pickImage}>
             {loading ? (
                 <View
                     style={styles.loadingContainer}
@@ -63,14 +67,16 @@ const ProfileImage = ({ size, uri, userId }) => {
                 </View>
             )}
 
-            <View style={styles.editIcon}>
-                <MaterialCommunityIcons
-                    name="file-image-plus"
-                    size={16}
-                    color={colors.grey}
-                />
-            </View>
-        </TouchableOpacity>
+            {showEditButton && !loading && (
+                <View style={styles.editIcon}>
+                    <MaterialCommunityIcons
+                        name="file-image-plus"
+                        size={16}
+                        color={colors.grey}
+                    />
+                </View>
+            )}
+        </Container>
     );
 };
 

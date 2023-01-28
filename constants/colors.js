@@ -8,4 +8,6 @@ export default {
     lighterDark: '#aaaaaa',
     text: '#242526',
     red: '#C21807',
+    primary: '#59b5e6',
+    secondary: '#5865F2',
 };

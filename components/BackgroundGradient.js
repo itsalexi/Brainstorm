@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
+
     },
     backgroundImage: {
         flex: 1,
