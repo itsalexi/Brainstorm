@@ -27,6 +27,7 @@ import {
 import { setChatsData } from '../store/chatSlice';
 import LoadingScreen from '../screens/LoadingScreen';
 import { setStoredUsers } from '../store/usersSlice';
+import { setChatMessages } from '../store/messagesSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,8 +44,6 @@ const TabNavigator = () => {
                 tabBarStyle: {
                     backgroundColor: colors.secondary,
                     height: '9%',
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
                 },
                 tabBarInactiveTintColor: 'white',
                 tabBarActiveTintColor: 'yellow',
@@ -93,7 +92,7 @@ const StackNavigator = () => {
         <Stack.Navigator
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#59b5e6',
+                    backgroundColor: colors.secondary,
                 },
                 headerTintColor: 'white',
             }}
@@ -149,7 +148,7 @@ const MainNavigator = () => {
             const chatsData = {};
             let chatsFoundCount = 0;
 
-            for (let i = 0; i < chatIds.length; i++) {
+            for (let i = 0; i <= chatIds.length; i++) {
                 const chatId = chatIds[i];
                 const chatRef = child(db, `chats/${chatId}`);
 
@@ -160,7 +159,7 @@ const MainNavigator = () => {
                     const data = chatSnapshot.val();
                     if (data) {
                         data.key = chatSnapshot.key;
-
+                        console.log(data, data.users);
                         data.users.forEach((userId) => {
                             if (storedUsers[userId]) return;
 
@@ -184,6 +183,14 @@ const MainNavigator = () => {
                         dispatch(setChatsData({ chatsData }));
                         setLoading(false);
                     }
+                });
+
+                const messagesRef = child(db, `messages/${chatId}`);
+                refs.push(messagesRef);
+
+                onValue(messagesRef, (messagesSnapshot) => {
+                    const messagesData = messagesSnapshot.val();
+                    dispatch(setChatMessages({ chatId, messagesData }));
                 });
 
                 if (chatsFoundCount == 0) {

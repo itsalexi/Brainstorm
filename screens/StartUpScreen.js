@@ -37,11 +37,11 @@ const StartUpScreen = () => {
             } finally {
                 const tryLogin = async () => {
                     const storedAuth = await AsyncStorage.getItem('userData');
+
                     if (!storedAuth) {
                         dispatch(setAttemptedAutoLogin());
                         return;
                     }
-
                     const parsedData = JSON.parse(storedAuth);
                     const {
                         token,

@@ -25,9 +25,7 @@ const LoadingScreen = () => {
 export default LoadingScreen;
 
 const styles = StyleSheet.create({
-    loading: {
-        
-    },
+    loading: {},
     imageContainer: {
         flex: 0.8,
         justifyContent: 'center',

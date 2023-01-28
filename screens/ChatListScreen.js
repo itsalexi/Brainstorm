@@ -15,7 +15,9 @@ const ChatListScreen = (props) => {
 
     const userChats = useSelector((state) => {
         const chatsData = state.chats.chatsData;
-        return Object.values(chatsData);
+        return Object.values(chatsData).sort((a, b) => {
+            return new Date(b.updatedAt) - new Date(a.updatedAt);
+        });
     });
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const ChatListScreen = (props) => {
                 );
             },
             headerLeft: () => {
-                return <PageTitle textStyle={styles.pageTitle} text="Chats" />;
+                return <PageTitle textStyle={styles.pageTitle} text="Messages" />;
             },
         });
     }, []);
@@ -56,25 +58,35 @@ const ChatListScreen = (props) => {
             <PageContainer style={styles.front}>
                 <View style={styles.container}>
                     <FlatList
+                        style={styles.chatList}
                         data={userChats}
                         renderItem={(itemData) => {
                             const chatData = itemData.item;
+                            const chatId = chatData.key;
 
                             const otherUserId = chatData.users.find(
-                                (user) => user.id !== userData.userId
+                                (uid) => uid != userData.userId
                             );
 
                             const otherUser = storedUsers[otherUserId];
 
                             if (!otherUser) return;
                             const title = `${otherUser.firstName} ${otherUser.lastName}`;
-                            const subTitle = `The last message`;
+                            const subTitle =
+                                chatData.latestMessageText || 'New chat';
                             const image = otherUser.profilePicture;
                             return (
                                 <DataItem
                                     title={title}
                                     subTitle={subTitle}
                                     image={image}
+                                    size={64}
+                                    onPress={() =>
+                                        props.navigation.navigate(
+                                            'ChatScreen',
+                                            { chatId }
+                                        )
+                                    }
                                 />
                             );
                         }}
@@ -102,6 +114,9 @@ const styles = StyleSheet.create({
     pageTitle: {
         color: colors.white,
         marginLeft: 20,
+    },
+    chatList: {
+        height: '100%',
     },
 });
 
