@@ -102,8 +102,11 @@ export const userLogout = () => {
 };
 
 export const updateUserData = async (userId, newData) => {
-    const fullName = `${newData.firstName} ${newData.lastName}`.toLowerCase();
-    newData.fullName = fullName;
+    if (newData.firstName && newData.lastName) {
+        const fullName =
+            `${newData.firstName} ${newData.lastName}`.toLowerCase();
+        newData.fullName = fullName;
+    }
 
     try {
         const db = ref(getDatabase());
