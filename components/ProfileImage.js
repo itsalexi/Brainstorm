@@ -30,7 +30,7 @@ const ProfileImage = ({ size, uri, userId, showEditButton }) => {
 
             if (!tempUri) return;
             setLoading(true);
-            const uploadURL = await uploadImageAsync(tempUri);
+            const uploadURL = await uploadImageAsync(tempUri, 'profilePics');
             setLoading(false);
             if (!uploadURL) {
                 throw new Error('Could not upload image');

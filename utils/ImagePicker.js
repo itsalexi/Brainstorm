@@ -24,7 +24,7 @@ export const launchImagePicker = async () => {
     }
 };
 
-export const uploadImageAsync = async (uri) => {
+export const uploadImageAsync = async (uri, path) => {
     // Snippet from https://github.com/expo/examples/blob/master/with-firebase-storage-upload/App.js
     const app = getFirebaseApp();
 
@@ -42,8 +42,7 @@ export const uploadImageAsync = async (uri) => {
         xhr.send();
     });
 
-    const pathFolder = `profilePics`;
-    const storageRef = ref(getStorage(app), `${pathFolder}/${uuid.v4()}`);
+    const storageRef = ref(getStorage(app), `${path}/${uuid.v4()}`);
 
     await uploadBytesResumable(storageRef, blob);
     blob.close();
