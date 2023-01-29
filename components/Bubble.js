@@ -41,6 +41,7 @@ const Bubble = ({
     setReply,
     replyingTo,
     name,
+    style,
 }) => {
     const starredMessages = useSelector(
         (state) => state.messages.starredMessages[chatId] ?? {}
@@ -72,6 +73,8 @@ const Bubble = ({
             timeStyle.justifyContent = 'flex-end';
             textStyle.alignSelf = 'flex-end';
             bubbleContainer.alignItems = 'flex-end';
+            wrapperStyle.flexDirection = 'row';
+
             Container = TouchableWithoutFeedback;
             isUserMessage = true;
             break;
@@ -82,6 +85,8 @@ const Bubble = ({
             isUserMessage = true;
             timeStyle.justifyContent = 'flex-start';
             bubbleContainer.alignItems = 'flex-start';
+            wrapperStyle.flexDirection = 'row';
+
             break;
         case 'reply':
             bubbleStyle.marginTop = 0;
@@ -104,8 +109,8 @@ const Bubble = ({
                     menuRef.current.props.ctx.menuActions.openMenu(id.current)
                 }
             >
-                <View style={bubbleContainer}>
-                    <View style={bubbleStyle}>
+                <View style={{ ...bubbleContainer, ...style }}>
+                    <View style={{ ...bubbleStyle }}>
                         {name && <Text style={styles.name}>{name}</Text>}
                         {replyingToUser && (
                             <Bubble
@@ -164,10 +169,7 @@ const Bubble = ({
 export default Bubble;
 
 const styles = StyleSheet.create({
-    wrapperStyle: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
+    wrapperStyle: {},
     text: {
         fontFamily: 'regular',
         fontSize: 18,
@@ -201,7 +203,6 @@ const styles = StyleSheet.create({
     },
     bubbleContainer: {
         flexDirection: 'column',
-        alignItems: 'flex-end',
     },
     name: {
         fontFamily: 'medium',
