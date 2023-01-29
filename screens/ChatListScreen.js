@@ -7,6 +7,7 @@ import DataItem from '../components/DataItem';
 import PageContainer from '../components/PageContainer';
 import PageTitle from '../components/PageTitle';
 import colors from '../constants/colors';
+import { formatTime } from '../utils/formatTime';
 
 const ChatListScreen = (props) => {
     const selectedUser = props.route?.params?.selectedUserId;
@@ -34,7 +35,9 @@ const ChatListScreen = (props) => {
                 );
             },
             headerLeft: () => {
-                return <PageTitle textStyle={styles.pageTitle} text="Messages" />;
+                return (
+                    <PageTitle textStyle={styles.pageTitle} text="Messages" />
+                );
             },
         });
     }, []);
@@ -75,12 +78,14 @@ const ChatListScreen = (props) => {
                             const subTitle =
                                 chatData.latestMessageText || 'New chat';
                             const image = otherUser.profilePicture;
+                            const updatedAt = formatTime(chatData.updatedAt);
                             return (
                                 <DataItem
                                     title={title}
                                     subTitle={subTitle}
                                     image={image}
                                     size={64}
+                                    updatedAt={updatedAt}
                                     onPress={() =>
                                         props.navigation.navigate(
                                             'ChatScreen',

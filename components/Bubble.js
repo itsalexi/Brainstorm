@@ -76,7 +76,6 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
     };
 
     const isStarred = isUserMessage && starredMessages[messageId] !== undefined;
-    console.log(starredMessages);
     return (
         <View style={wrapperStyle}>
             <Container
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'regular',
-        fontSize: '20',
+        fontSize: 20,
     },
     container: {
         backgroundColor: 'white',
