@@ -31,10 +31,22 @@ const MenuItem = (props) => {
     );
 };
 
-const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
+const Bubble = ({
+    text,
+    type,
+    messageId,
+    chatId,
+    userId,
+    date,
+    setReply,
+    replyingTo,
+    name,
+}) => {
     const starredMessages = useSelector(
         (state) => state.messages.starredMessages[chatId] ?? {}
     );
+
+    const storedUsers = useSelector((state) => state.users.storedUsers);
 
     const bubbleStyle = { ...styles.container };
     const textStyle = { ...styles.text };
@@ -65,11 +77,14 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
             break;
         case 'theirMessage':
             wrapperStyle.justifyContent = 'flex-start';
-            bubbleStyle.maxWidth = '90%';
+            bubbleContainer.maxWidth = '90%';
             Container = TouchableWithoutFeedback;
             isUserMessage = true;
             timeStyle.justifyContent = 'flex-start';
             bubbleContainer.alignItems = 'flex-start';
+            break;
+        case 'reply':
+            bubbleStyle.marginTop = 0;
             break;
         default:
             break;
@@ -80,6 +95,8 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
     };
 
     const isStarred = isUserMessage && starredMessages[messageId] !== undefined;
+    const replyingToUser = replyingTo && storedUsers[replyingTo.sentBy];
+
     return (
         <View style={wrapperStyle}>
             <Container
@@ -89,6 +106,15 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
             >
                 <View style={bubbleContainer}>
                     <View style={bubbleStyle}>
+                        {name && <Text style={styles.name}>{name}</Text>}
+                        {replyingToUser && (
+                            <Bubble
+                                type="reply"
+                                text={replyingTo.text}
+                                name={`${replyingToUser.firstName} ${replyingToUser.lastName}`}
+                            />
+                        )}
+
                         <Text style={textStyle}>{text}</Text>
 
                         <Menu name={id.current} ref={menuRef}>
@@ -110,9 +136,7 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
                                 />
                                 <MenuItem
                                     text="Reply"
-                                    onSelect={() =>
-                                        starMessage(messageId, chatId, userId)
-                                    }
+                                    onSelect={setReply}
                                     iconPack={Entypo}
                                     icon="reply"
                                 />
@@ -146,14 +170,14 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'regular',
-        fontSize: 20,
+        fontSize: 18,
     },
     container: {
         backgroundColor: 'white',
         borderRadius: 6,
-        padding: 7,
-        marginTop: 15,
+        padding: 6,
         marginBottom: 6,
+        marginTop: 10,
     },
     menuItemContainer: {
         flexDirection: 'row',
@@ -178,5 +202,8 @@ const styles = StyleSheet.create({
     bubbleContainer: {
         flexDirection: 'column',
         alignItems: 'flex-end',
+    },
+    name: {
+        fontFamily: 'medium',
     },
 });

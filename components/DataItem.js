@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View, Text } from 'react-native';
+import {
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
+    Text,
+    Dimensions,
+} from 'react-native';
 import colors from '../constants/colors';
 import ProfileImage from './ProfileImage';
 const DataItem = (props) => {
@@ -12,20 +18,28 @@ const DataItem = (props) => {
                     <ProfileImage uri={image} size={size ? size : 56} />
 
                     <View style={styles.textContainer}>
-                        <Text numberOfLines={1} style={styles.title}>
-                            {title}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.subTitle}>
+                        <View style={styles.titleContainer}>
+                            <Text numberOfLines={1} style={styles.title}>
+                                {title}
+                            </Text>
+                            {updatedAt && (
+                                <View style={styles.time}>
+                                    <Text style={styles.timeText}>
+                                        {updatedAt}
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+
+                        <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={styles.subTitle}
+                        >
                             {subTitle}
                         </Text>
                     </View>
                 </View>
-
-                {updatedAt && (
-                    <View style={styles.time}>
-                        <Text>{updatedAt}</Text>
-                    </View>
-                )}
             </View>
         </TouchableWithoutFeedback>
     );
@@ -41,6 +55,7 @@ const styles = StyleSheet.create({
         minHeight: 50,
         marginBottom: 10,
         justifyContent: 'space-between',
+        flex: 1,
     },
     textContainer: {
         marginLeft: 12,
@@ -48,15 +63,29 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'medium',
         fontSize: 20,
+        maxWidth: Dimensions.get('window').width * 0.5,
     },
     subTitle: {
         fontFamily: 'regular',
         color: colors.lighterDark,
-        fontSize: 16,
+        fontSize: 14,
+        width: Dimensions.get('window').width * 0.7,
     },
     avatarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    time: {
+        backgroundColor: 'transparent',
+    },
+    timeText: {
+        fontSize: 10,
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: Dimensions.get('window').width * 0.7,
     },
 });
 

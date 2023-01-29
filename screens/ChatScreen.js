@@ -22,6 +22,7 @@ import { getUserData } from '../utils/actions/userActions';
 import PageContainer from '../components/PageContainer';
 import Bubble from '../components/Bubble';
 import { createChat, sendTextMessage } from '../utils/actions/chatActions';
+import ReplyTo from '../components/ReplyTo';
 
 const ChatScreen = (props) => {
     const [chatUsers, setChatUsers] = useState([]);
@@ -79,8 +80,14 @@ const ChatScreen = (props) => {
                 setMessage('');
                 return;
             }
-            await sendTextMessage(chatId, userData.userId, message);
+            await sendTextMessage(
+                chatId,
+                userData.userId,
+                message,
+                replyingTo && replyingTo.key
+            );
             setMessage('');
+            setReplyingTo(null);
         } catch (error) {
             setErrorBanner('Messaged failed to send: ' + error.code);
             setTimeout(() => {
@@ -132,7 +139,17 @@ const ChatScreen = (props) => {
                                             userId={userData.userId}
                                             chatId={chatId}
                                             date={message.sentAt}
-                                            setReply={() => setReplyingTo(message)}
+                                            setReply={() =>
+                                                setReplyingTo(message)
+                                            }
+                                            replyingTo={
+                                                message.replyTo &&
+                                                chatMessages.find(
+                                                    (msg) =>
+                                                        msg.key ===
+                                                        message.replyTo
+                                                )
+                                            }
                                         />
                                     );
                                 }}
@@ -140,7 +157,13 @@ const ChatScreen = (props) => {
                         )}
                     </PageContainer>
 
-                    {replyingTo && <Text>Replying To</Text>}
+                    {replyingTo && (
+                        <ReplyTo
+                            text={replyingTo.text}
+                            user={storedUsers[replyingTo.sentBy]}
+                            onCancel={() => setReplyingTo(null)}
+                        />
+                    )}
                 </View>
 
                 <View style={styles.inputContainer}>

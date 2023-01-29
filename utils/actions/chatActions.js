@@ -32,7 +32,12 @@ export const createChat = async (loggedinUserId, chatData) => {
     return newChat.key;
 };
 
-export const sendTextMessage = async (chatId, senderId, messageText) => {
+export const sendTextMessage = async (
+    chatId,
+    senderId,
+    messageText,
+    replyTo
+) => {
     const app = getFirebaseApp();
     const db = ref(getDatabase(app));
     const messagesRef = child(db, `messages/${chatId}`);
@@ -42,6 +47,10 @@ export const sendTextMessage = async (chatId, senderId, messageText) => {
         sentAt: new Date().toISOString(),
         text: messageText,
     };
+
+    if (replyTo) {
+        messageData.replyTo = replyTo;
+    }
 
     await push(messagesRef, messageData);
 
