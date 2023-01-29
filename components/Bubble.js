@@ -12,6 +12,8 @@ import * as Clipboard from 'expo-clipboard';
 
 import uuid from 'react-native-uuid';
 import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+
 import { starMessage } from '../utils/actions/chatActions';
 import { useSelector } from 'react-redux';
 import { formatTime } from '../utils/formatTime';
@@ -38,6 +40,7 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
     const textStyle = { ...styles.text };
     const wrapperStyle = { ...styles.wrapperStyle };
     const timeStyle = { ...styles.timeContainer };
+    const bubbleContainer = { ...styles.bubbleContainer };
     const menuRef = useRef(null);
     const id = useRef(uuid.v4());
     let Container = View;
@@ -53,9 +56,10 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
         case 'ownMessage':
             wrapperStyle.justifyContent = 'flex-end';
             bubbleStyle.backgroundColor = '#E7FED6';
-            bubbleStyle.maxWidth = '90%';
+            bubbleContainer.maxWidth = '90%';
             timeStyle.justifyContent = 'flex-end';
             textStyle.alignSelf = 'flex-end';
+            bubbleContainer.alignItems = 'flex-end';
             Container = TouchableWithoutFeedback;
             isUserMessage = true;
             break;
@@ -65,7 +69,7 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
             Container = TouchableWithoutFeedback;
             isUserMessage = true;
             timeStyle.justifyContent = 'flex-start';
-
+            bubbleContainer.alignItems = 'flex-start';
             break;
         default:
             break;
@@ -82,11 +86,39 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
                 onLongPress={() =>
                     menuRef.current.props.ctx.menuActions.openMenu(id.current)
                 }
-                style={{ width: '100%' }}
             >
-                <View style={bubbleStyle}>
-                    <Text style={textStyle}>{text}</Text>
+                <View style={bubbleContainer}>
+                    <View style={bubbleStyle}>
+                        <Text style={textStyle}>{text}</Text>
 
+                        <Menu name={id.current} ref={menuRef}>
+                            <MenuTrigger />
+                            <MenuOptions>
+                                <MenuItem
+                                    text="Copy to clipboard"
+                                    onSelect={() => copyToClipboard(text)}
+                                    icon="copy"
+                                />
+                                <MenuItem
+                                    text={`${
+                                        isStarred ? 'Unstar' : 'Star'
+                                    } message`}
+                                    onSelect={() =>
+                                        starMessage(messageId, chatId, userId)
+                                    }
+                                    icon="star"
+                                />
+                                <MenuItem
+                                    text="Reply"
+                                    onSelect={() =>
+                                        starMessage(messageId, chatId, userId)
+                                    }
+                                    iconPack={Entypo}
+                                    icon="reply"
+                                />
+                            </MenuOptions>
+                        </Menu>
+                    </View>
                     {date && (
                         <View style={timeStyle}>
                             {isStarred && (
@@ -99,25 +131,6 @@ const Bubble = ({ text, type, messageId, chatId, userId, date }) => {
                             <Text style={styles.time}>{formatTime(date)}</Text>
                         </View>
                     )}
-                    <Menu name={id.current} ref={menuRef}>
-                        <MenuTrigger />
-                        <MenuOptions>
-                            <MenuItem
-                                text="Copy to clipboard"
-                                onSelect={() => copyToClipboard(text)}
-                                icon="copy"
-                            />
-                            <MenuItem
-                                text={`${
-                                    isStarred ? 'Unstar' : 'Star'
-                                } message`}
-                                onSelect={() =>
-                                    starMessage(messageId, chatId, userId)
-                                }
-                                icon="star"
-                            />
-                        </MenuOptions>
-                    </Menu>
                 </View>
             </Container>
         </View>
@@ -140,6 +153,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 7,
         marginTop: 15,
+        marginBottom: 6,
     },
     menuItemContainer: {
         flexDirection: 'row',
@@ -160,5 +174,9 @@ const styles = StyleSheet.create({
         fontFamily: 'regular',
         color: colors.grey,
         fontSize: 10,
+    },
+    bubbleContainer: {
+        flexDirection: 'column',
+        alignItems: 'flex-end',
     },
 });
