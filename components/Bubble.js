@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View,
+} from 'react-native';
 import React, { useRef } from 'react';
 import colors from '../constants/colors';
 import {
@@ -42,6 +48,7 @@ const Bubble = ({
     replyingTo,
     name,
     style,
+    imageUrl,
 }) => {
     const starredMessages = useSelector(
         (state) => state.messages.starredMessages[chatId] ?? {}
@@ -120,7 +127,13 @@ const Bubble = ({
                             />
                         )}
 
-                        <Text style={textStyle}>{text}</Text>
+                        {!imageUrl && <Text style={textStyle}>{text}</Text>}
+                        {imageUrl && (
+                            <Image
+                                source={{ uri: imageUrl }}
+                                style={styles.image}
+                            />
+                        )}
 
                         <Menu name={id.current} ref={menuRef}>
                             <MenuTrigger />
@@ -169,7 +182,9 @@ const Bubble = ({
 export default Bubble;
 
 const styles = StyleSheet.create({
-    wrapperStyle: {},
+    wrapperStyle: {
+        marginBottom: 5,
+    },
     text: {
         fontFamily: 'regular',
         fontSize: 18,
@@ -178,7 +193,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 6,
         padding: 6,
-        marginBottom: 6,
+        marginBottom: 3,
         marginTop: 10,
     },
     menuItemContainer: {
@@ -206,5 +221,9 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'medium',
+    },
+    image: {
+        width: 300,
+        height: 300,
     },
 });
