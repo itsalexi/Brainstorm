@@ -27,7 +27,7 @@ import {
 import { setChatsData } from '../store/chatSlice';
 import LoadingScreen from '../screens/LoadingScreen';
 import { setStoredUsers } from '../store/usersSlice';
-import { setChatMessages } from '../store/messagesSlice';
+import { setChatMessages, setStarredMessages } from '../store/messagesSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -159,7 +159,6 @@ const MainNavigator = () => {
                     const data = chatSnapshot.val();
                     if (data) {
                         data.key = chatSnapshot.key;
-                        console.log(data, data.users);
                         data.users.forEach((userId) => {
                             if (storedUsers[userId]) return;
 
@@ -197,6 +196,16 @@ const MainNavigator = () => {
                     setLoading(false);
                 }
             }
+        });
+
+        const userStarredMessagesRef = child(
+            db,
+            `userStarredMessages/${userData.userId}`
+        );
+        refs.push(userStarredMessagesRef);
+        onValue(userStarredMessagesRef, (starredMessagesSnapshot) => {
+            const starredMessages = starredMessagesSnapshot.val() ?? {};
+            dispatch(setStarredMessages({ starredMessages }));
         });
 
         return () => {
