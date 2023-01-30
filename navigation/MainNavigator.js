@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import {
+    View,
+    Text,
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    Platform,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -217,7 +223,14 @@ const MainNavigator = () => {
         return <LoadingScreen />;
     }
 
-    return <StackNavigator />;
+    return (
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+            <StackNavigator />
+        </KeyboardAvoidingView>
+    );
 };
 
 export default MainNavigator;

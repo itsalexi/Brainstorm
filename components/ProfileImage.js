@@ -15,7 +15,15 @@ import { launchImagePicker, uploadImageAsync } from '../utils/ImagePicker';
 import { updateUserData } from '../utils/actions/authActions';
 import { useDispatch } from 'react-redux';
 import { updateUserStateData } from '../store/authSlice';
-const ProfileImage = ({ size, uri, userId, showEditButton }) => {
+const ProfileImage = ({
+    size,
+    uri,
+    userId,
+    showEditButton,
+    showRemoveButton,
+    onPress,
+    style,
+}) => {
     const dispatch = useDispatch();
     const source = uri ? { uri } : userImage;
 
@@ -23,6 +31,7 @@ const ProfileImage = ({ size, uri, userId, showEditButton }) => {
     const [loading, setLoading] = useState(false);
 
     const showEdit = showEditButton && showEditButton === true;
+    const showRemove = showRemoveButton && showRemoveButton === true;
 
     const pickImage = async () => {
         try {
@@ -46,10 +55,10 @@ const ProfileImage = ({ size, uri, userId, showEditButton }) => {
         }
     };
 
-    const Container = showEditButton ? TouchableOpacity : View;
+    const Container = onPress || showEdit ? TouchableOpacity : View;
 
     return (
-        <Container onPress={pickImage}>
+        <Container style={style} onPress={onPress || pickImage}>
             {loading ? (
                 <View
                     style={styles.loadingContainer}
@@ -67,10 +76,20 @@ const ProfileImage = ({ size, uri, userId, showEditButton }) => {
                 </View>
             )}
 
-            {showEditButton && !loading && (
+            {showEdit && !loading && (
                 <View style={styles.editIcon}>
                     <MaterialCommunityIcons
                         name="file-image-plus"
+                        size={16}
+                        color={colors.grey}
+                    />
+                </View>
+            )}
+
+            {showRemove && !loading && (
+                <View style={styles.removeIcon}>
+                    <MaterialCommunityIcons
+                        name="window-close"
                         size={16}
                         color={colors.grey}
                     />
@@ -99,6 +118,16 @@ const styles = StyleSheet.create({
     loadingContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    removeIcon: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: colors.white,
+        padding: 3,
+        borderRadius: 50,
+        borderColor: colors.dark,
+        borderWidth: 1,
     },
 });
 
